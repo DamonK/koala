@@ -100,7 +100,7 @@ exports.getAppPackage = function () {
     return appPackage;
 };
 
-require('./ExtensionsManager').loadExtensions();
+compilersManager.loadCompilers();
 
 //module initialization
 initUserConfig();

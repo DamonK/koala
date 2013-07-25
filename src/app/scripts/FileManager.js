@@ -14,6 +14,7 @@ exports.appRootDir   = process.cwd();
     exports.appDataDir      = path.join(exports.appRootDir, 'app');
         exports.appAssetsDir     = path.join(exports.appDataDir, 'assets');
         exports.appBinDir        = path.join(exports.appDataDir, 'bin');
+        exports.appCompilersDir  = path.join(exports.appDataDir, 'compilers');
         exports.appExtensionsDir = path.join(exports.appDataDir, 'extensions');
         exports.appLocalesDir    = path.join(exports.appDataDir, 'locales');
         exports.appScriptsDir    = path.join(exports.appDataDir, 'scripts');
@@ -22,6 +23,7 @@ exports.appRootDir   = process.cwd();
     exports.packageJSONFile = path.join(exports.appRootDir, 'package.json');
 
 exports.userDataDir  = path.join(process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'], '.koala');
+    exports.userCompilersDir  = path.join(exports.userDataDir, 'compilers');
     exports.userExtensionsDir = path.join(exports.userDataDir, 'extensions');
     exports.userLocalesDir    = path.join(exports.userDataDir, 'locales');
     exports.errorLogFile      = path.join(exports.userDataDir, 'error.log');

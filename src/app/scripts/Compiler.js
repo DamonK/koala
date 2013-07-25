@@ -22,7 +22,12 @@ function Compiler(config, dir) {
     assert(util.asArray(config.file_types).length > 0, "'config' must contain 'file_types'");
 
     this.name = config.name;
-    this.display = config.display;
+    this.description = config.description;
+    this.version = config.version;
+    this.koalaVersion = config.koala_version || "*";
+    this.display = config.display || this.name;
+
+    this.maintainers = util.asArray(config.maintainers);
 
     this.fileTypes = [];
     util.asArray(config.file_types).forEach(function (fileTypeConfig) {

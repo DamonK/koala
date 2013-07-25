@@ -11,6 +11,9 @@ var path        = require('path'),
 if (!fs.existsSync(FileManager.userDataDir)) {
     fs.mkdirSync(FileManager.userDataDir);
 }
+if (!fs.existsSync(FileManager.userCompilersDir)) {
+    fs.mkdirSync(FileManager.userCompilersDir);
+}
 if (!fs.existsSync(FileManager.userExtensionsDir)) {
     fs.mkdirSync(FileManager.userExtensionsDir);
 }

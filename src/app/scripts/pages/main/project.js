@@ -8,7 +8,7 @@
 var fs                = require('fs'),
     path              = require('path'),
     storage           = require('../../storage.js'),
-    extensionsManager = require('../../ExtensionsManager.js'),
+    compilersManager  = require('../../compilersManager.js'),
     projectManager    = require('../../projectManager.js'),
     jadeManager       = require('../../jadeManager.js'),
     il8n              = require('../../il8n.js'),
@@ -107,9 +107,9 @@ global.mainWindow.window.ondragover = function (e) {
             return false;
         }
 
-        // install extension pack
-        if (items.length === 1 && path.extname(items[0].name) === '.koala-extension') {
-            extensionsManager.install(items[0].path);
+        // install compiler pack
+        if (items.length === 1 && path.extname(items[0].name) === '.koala-compiler') {
+            compilersManager.install(items[0].path);
             return false;
         }
 
