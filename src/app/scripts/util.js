@@ -313,3 +313,23 @@ exports.syncObject = function (source, tmpl) {
     
     return syncAble;
 };
+
+/**
+ * parse version string
+ * @param  {string} version version string
+ * @return {number}         version num
+ */
+exports.parseVersion = function (version) {
+    var numList = version.split('.'),
+        versionNum = 0,
+        multiple = 100;
+
+    for (var i = 0; i < 3; i++) {
+        if (numList[i] !== undefined) {
+            versionNum += numList[i] * multiple;
+            multiple = multiple / 10;
+        }
+    }
+
+    return versionNum;
+}

@@ -7,8 +7,7 @@
 var fs          = require('fs'),
     path        = require('path'),
     FileManager = global.getFileManager(),
-    Compiler    = require(FileManager.appScriptsDir + '/Compiler'),
-    fileWatcher = require(FileManager.appScriptsDir + '/fileWatcher.js');
+    Compiler    = require(FileManager.appScriptsDir + '/Compiler.js');
 
 function UglifyJSCompiler(config) {
     Compiler.apply(this, arguments);
@@ -88,7 +87,7 @@ UglifyJSCompiler.prototype.compileFileWithLib = function (file, done) {
 
                     done();
 
-                    fileWatcher.addImports(this.getImports(file.src), file.src);
+                    this.watchImports(this.getImports(file.src), file.src);
                 }.bind(this));
             } catch (err) {
                 done(err);

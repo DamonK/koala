@@ -14,16 +14,16 @@ exports.appRootDir   = process.cwd();
     exports.appDataDir      = path.join(exports.appRootDir, 'app');
         exports.appAssetsDir     = path.join(exports.appDataDir, 'assets');
         exports.appBinDir        = path.join(exports.appDataDir, 'bin');
-        exports.appExtensionsDir = path.join(exports.appDataDir, 'extensions');
         exports.appLocalesDir    = path.join(exports.appDataDir, 'locales');
         exports.appScriptsDir    = path.join(exports.appDataDir, 'scripts');
+            exports.appCompilersDir = path.join(exports.appScriptsDir, 'compilers');
         exports.appSettingsDir   = path.join(exports.appDataDir, 'settings');
         exports.appViewsDir      = path.join(exports.appDataDir, 'views');
     exports.packageJSONFile = path.join(exports.appRootDir, 'package.json');
 
 exports.oldUserDataDir = path.join(process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME'], '.koala');
 exports.userDataDir  = path.join(process.env[(process.platform === 'win32') ? 'USERPROFILE' : 'HOME'], (process.platform === 'darwin') ? 'Library/Application Support/Koala/UserData' :'.koala');
-    exports.userExtensionsDir = path.join(exports.userDataDir, 'extensions');
+    exports.userCompilersDir  = path.join(exports.userDataDir, 'compilers');
     exports.userLocalesDir    = path.join(exports.userDataDir, 'locales');
     exports.userCacheDir      = path.join(exports.userDataDir, 'cache');
     exports.errorLogFile      = path.join(exports.userDataDir, 'error.log');
@@ -36,8 +36,8 @@ exports.userDataDir  = path.join(process.env[(process.platform === 'win32') ? 'U
 if (!fs.existsSync(exports.userDataDir)) {
     fs.mkdirSync(exports.userDataDir);
 }
-if (!fs.existsSync(exports.userExtensionsDir)) {
-    fs.mkdirSync(exports.userExtensionsDir);
+if (!fs.existsSync(exports.userCompilersDir)) {
+    fs.mkdirSync(exports.userCompilersDir);
 }
 if (!fs.existsSync(exports.userLocalesDir)) {
     fs.mkdirSync(exports.userLocalesDir);

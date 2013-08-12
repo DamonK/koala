@@ -7,7 +7,7 @@
 var fs          = require('fs'),
     path        = require('path'),
     FileManager = global.getFileManager(),
-    Compiler    = require(FileManager.appScriptsDir + '/Compiler');
+    Compiler    = require(FileManager.appScriptsDir + '/Compiler.js');
 
 /**
  * CoffeeScript Compiler

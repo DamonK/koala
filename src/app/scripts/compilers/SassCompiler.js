@@ -7,8 +7,7 @@
 var fs          = require('fs'),
     path        = require('path'),
     FileManager = global.getFileManager(),
-    Compiler    = require(FileManager.appScriptsDir + '/Compiler'),
-    fileWatcher = require(FileManager.appScriptsDir + '/fileWatcher.js');
+    Compiler    = require(FileManager.appScriptsDir + '/Compiler.js');
 
 /**
  * Sass Compiler
@@ -136,7 +135,7 @@ SassCompiler.prototype.sassCompileFile = function (file, done) {
 
             //add watch import file
             var imports = self.getImports(filePath);
-            fileWatcher.addImports(imports, filePath);
+            self.watchImports(imports, filePath);
         }
     });
 };
@@ -199,7 +198,7 @@ SassCompiler.prototype.compassCompileFile = function (file, done) {
 
             //add watch import file
             var imports = self.getImports(filePath);
-            fileWatcher.addImports(imports, filePath);
+            self.watchImports(imports, filePath);
         }
     });
 };
@@ -212,13 +211,10 @@ SassCompiler.prototype.compassCompileFile = function (file, done) {
 SassCompiler.prototype.getImports = function (srcFile) {
     //match imports from code
     var reg = /@import\s+["']([^.]+?|.*\.(sass|scss))["']/g,
-        result, item, file,
-
-        //get fullpath of imports
-        dirname = path.dirname(srcFile),
+        result, item, file, temPath,
+        base = path.dirname(srcFile), //get fullpath of imports
         extname = path.extname(srcFile),
         fullPathImports = [],
-
         code = fs.readFileSync(srcFile, 'utf8');
         code = code.replace(/\/\/.+?[\r\t\n]|\/\*[\s\S]+?\*\//g, '');
 
@@ -228,11 +224,14 @@ SassCompiler.prototype.getImports = function (srcFile) {
             item += extname;
         }
 
-        file = path.resolve(dirname, item);
+        file = path.resolve(base, item);
 
         // the '_' is omittable sass imported file
         if (path.basename(item).indexOf('_') === -1) {
-            file = path.resolve(path.dirname(file), '_' + path.basename(item));
+            temPath = path.resolve(path.dirname(file), '_' + path.basename(item));
+            if (fs.existsSync(temPath)) {
+                file = temPath;
+            }
         }
 
         if (fs.existsSync(file)) {

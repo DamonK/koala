@@ -185,8 +185,8 @@ function detectLanguagePackUpdate () {
 /**
  * Detect Extensions Packs Update
  */
-function detectExtensionsPacksUpdate () {
-    require('./ExtensionsManager.js').detectUpdate();
+function detectCompilersPacksUpdate () {
+    require('./compilersManager.js').detectUpdate();
 }
 
 /**
@@ -198,9 +198,10 @@ function checkUpgrade () {
         currentVersion = appPackage.version;
 
     util.checkUpgrade(url, currentVersion, function (data, hasNewVersion) {
+        // if not has new version koala, then detect locales and compilers
         if (!hasNewVersion) {
             detectLanguagePackUpdate();
-            detectExtensionsPacksUpdate();
+            detectCompilersPacksUpdate();
             return false;
         }
 

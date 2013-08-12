@@ -42,6 +42,8 @@ exports.renderFolders  = function (data) {
  * @return {Object} file list elements
  */
 exports.renderFiles  = function (data) {
+    data = util.clone(data);
+
     var pid = data[0].pid,
         projectDir = storage.getProjects()[pid].src;
 
@@ -66,6 +68,8 @@ exports.renderSettings = function (file) {
         options  = [],
         settings = file.settings;
 
+    if (!compiler) return '';
+    
     // get display options
     compiler.options.forEach(function (option) {
         if (settings.hasOwnProperty(option.name)) {

@@ -9,8 +9,10 @@ var path             = require('path'),
     assert           = require('assert'),
     fileTypesManager = require('./fileTypesManager'),
     util             = require('./util'),
+    configManager    = require('./appConfigManager'),
+    fileWatcher      = require('./fileWatcher.js'),
     notifier         = require('./notifier'),
-    appConfig        = require('./appConfigManager').getAppConfig(),
+    storage          = require('./storage.js'),
     FileManager      = require('./FileManager.js');
 
 /**
@@ -22,7 +24,13 @@ function Compiler(config, dir) {
     assert(config.name, "'config' must contain 'name'");
 
     this.name = config.name;
-    this.display = config.display;
+    this.description = config.description;
+    this.version = config.version;
+    this.koalaVersion = config.koalaVersion || "*";
+    this.display = config.display || this.name;
+
+    this.maintainers = util.asArray(config.maintainers);
+
 
     this.fileTypes = [];
     util.asArray(config.file_types).forEach(function (fileTypeConfig) {
@@ -113,66 +121,6 @@ Compiler.prototype.accepts = function (fileExt) {
     });
 };
 
-// Compiler.prototype.getDisplay = function (propertyPath) {
-//     var props = propertyPath.split('.'),
-//         i, value;
-
-//     for (i = 0, value = this.display; i < props.length && value; i++) {
-//         value = value[props[i]];
-//     }
-//     if (!value) {
-//         for (i = 0, value = this; i < props.length && value; i++) {
-//             value = value[props[i]];
-//         }
-//     }
-
-//     return value;
-// };
-
-Compiler.prototype.hasOptions = function () {
-    return !util.isEmpty(this.options);
-};
-
-Compiler.prototype.hasAdvancedOptions = function () {
-    return !util.isEmpty(this.advanced);
-};
-
-Compiler.prototype.toJSON = function () {
-    // TODO:: update
-
-    var json = {};
-
-    json.name = this.name;
-    json.compiler_version = this.compilerVersion;
-    json.fileTypes = this.fileTypeNames;
-    json.output_extensions = this.outputExtensions;
-
-    if (!util.isEmpty(json.options)) {
-        json.options = this.newOptions;
-    }
-    if (!util.isEmpty(json.outputStyle)) {
-        json.outputStyle = this.outputStyle;
-    }
-
-    if (!util.isEmpty(json.display)) {
-        json.display = {};
-        if (this.display.name) {
-            json.display.name = this.display.name;
-        }
-        if (this.display.options) {
-            json.display.options = this.display.options;
-        }
-        if (this.display.outputStyle) {
-            json.display.outputStyle = this.display.outputStyle;
-        }
-    }
-
-    if (!util.isEmpty(this.defaults)) {
-        json.defaults = this.defaults;
-    }
-};
-
-
 
 Compiler.prototype.getImports = function (filePath) {
     return [];
@@ -248,7 +196,7 @@ Compiler.prototype.getCommandPath = function(defaultPath) {
  * @return {object}             settings
  */
 Compiler.prototype.getGlobalSettings = function(compileName) {
-    return util.clone(require(FileManager.appScriptsDir + '/appConfigManager.js').getGlobalSettingsOfCompiler(compileName || this.name));
+	return util.clone(configManager.getGlobalSettingsOfCompiler(compileName || this.name));
 };
 
 /**
@@ -256,7 +204,7 @@ Compiler.prototype.getGlobalSettings = function(compileName) {
  * @return {object} app config
  */
 Compiler.prototype.getAppConfig = function () {
-	return util.clone(require(FileManager.appScriptsDir + '/appConfigManager.js').getAppConfig());
+	return util.clone(configManager.getAppConfig());
 };
 
 /**
@@ -264,7 +212,24 @@ Compiler.prototype.getAppConfig = function () {
  * @param  {string} pid project id
  * @return {object}     project data
  */
-Compiler.prototype.getProjectById = function (pid) {
-	var projectDb = require(FileManager.appScriptsDir + '/storage.js').getProjects();
-	return util.clone(projectDb[pid]);
+Compiler.prototype.getProjectById= function (pid) {
+	return util.clone(storage.getProjects()[pid]);
 };
+
+/**
+ * throw error message
+ * @param  {string} message  error message
+ * @param  {string} filePath file path
+ */
+Compiler.prototype.throwError = function(message, filePath) {
+	notifier.throwError(message, filePath);
+};
+
+/**
+ * watch import files
+ * @param  {array} imports    import array
+ * @param  {string} sourceFile sourcr file
+ */
+Compiler.prototype.watchImports = function (imports, sourceFile) {
+	fileWatcher.addImports(imports, sourceFile);
+}

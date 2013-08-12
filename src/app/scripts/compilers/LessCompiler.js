@@ -7,8 +7,7 @@
 var fs          = require('fs'),
     path        = require('path'),
     FileManager = global.getFileManager(),
-    Compiler    = require(FileManager.appScriptsDir + '/Compiler'),
-    fileWatcher = require(FileManager.appScriptsDir + '/fileWatcher.js');
+    Compiler    = require(FileManager.appScriptsDir + '/Compiler.js');
 
 function LessCompiler(config) {
     Compiler.apply(this, arguments);
@@ -23,7 +22,7 @@ LessCompiler.prototype.compileFile = function (file, done) {
         this.compileFileWithCommand(file, done);
     } else {
         this.compileFileWithLib(file, function (lessErr) {
-            done(prepareLessError(lessErr));
+            done(parseError(lessErr));
         });
     }
 };
@@ -162,7 +161,7 @@ LessCompiler.prototype.compileFileWithLib = function (file, done) {
 
                 //add watch import file
                 var imports = self.getImports(filePath);
-                fileWatcher.addImports(imports, filePath);
+                self.watchImports(imports, filePath);
             }
         });
     }
@@ -275,7 +274,7 @@ LessCompiler.prototype.compileFileWithCommand = function (file, done) {
 
             //add watch import file
             var imports = self.getImports(filePath);
-            fileWatcher.addImports(imports, filePath);
+            self.watchImports(imports, filePath);
         }
     });
 };
@@ -309,11 +308,16 @@ LessCompiler.prototype.getImports = function (srcFile) {
     return fullPathImports;
 };
 
-function prepareLessError(err) {
-    if (err && err.extract) {
-        var extract = err.extract,
-            error = [],
-            message = "";
+/**
+ * parse error of less
+ * @param  {Object} err error object
+ */
+function parseError (err) {
+    var message = "";
+
+    if (err.extract) {
+        var extract = err.extract;
+        var error = [];
 
         if (typeof(extract[0]) === 'string') {
             error.push((err.line - 1) + ' ' + extract[0]);
