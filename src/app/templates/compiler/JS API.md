@@ -73,13 +73,69 @@ Whether on not to watch the files of this type.
 ### Properties
 
 #### id
+*Type* `String`
+
+File ID.
+
 #### pid
-#### extension
-#### type
-The name of the `FileType`.
+*Type* `String`
+
+ID of the project this file belongs to.
+
+#### compiler
+*Type* `String`
+
+Name of the compiler that will compile this file.
 
 #### name
+*Type* `String`
+
+File Name.
+
 #### src
+*Type* `String`
+
+File Path.
+
 #### output
+*Type* `String`
+
+Output Path.
+
 #### compile
+*Type* `Boolean`
+
+Whether to auto compile,
+
+#### watch
+*Type* `Boolean`
+
+Whether to watch this file.
+
 #### settings
+*Type* `Object`
+
+File specific settings.
+
+## Project
+### Properties
+
+#### name
+*Type* `String`
+
+Project Name.
+
+#### src
+*Type* `String`
+
+Project Path.
+
+#### config
+*Type* `Object`
+
+Project wide settings.
+
+#### files
+*Type* `Array.<File>`
+
+List of files in the project.
