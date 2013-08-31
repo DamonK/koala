@@ -12,6 +12,4 @@ src/.sass-cache
 src/node-webkit.app
 src/ruby
 src/node_modules
-src/rubygems/bin
-src/rubygems/gems
-src/rubygems/specifications
+src/rubygems

@@ -45,6 +45,7 @@
 		"dustjs-linkedin": "~1.2.3",
 		"fs-extra": "~0.6.1",
 		"jade": "~0.27.7",
+		"eventproxy": "~0.2.5",
 		"less": "~1.4.0",
 		"uglify-js": "~2.3.6"
 	},
