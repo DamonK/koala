@@ -37,6 +37,9 @@ For Linux, copy `nw, nw.pak`, install Ruby: `sudo apt-get install ruby`;
 For Mac OS X, copy `node-webkit.app`, OS X already have Ruby installed.
 4. Run the `nw` executable file.
 
+##### build for grunt-node-webkit-builder
+`npm install -g grunt-cli && npm install && grunt`
+
 ## License
 
 `koala`'s code uses the Apache license, Version 2.0, see our `LICENSE` file.
